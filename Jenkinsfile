@@ -14,6 +14,7 @@ pipeline {
         stash(name: 'war', includes: 'target/**')
       }
     }
+
     stage('Backend') {
       parallel {
         stage('Unit') {
@@ -30,6 +31,7 @@ pipeline {
             junit '**/surefire-reports/**/*.xml'
           }
         }
+
         stage('Performance') {
           agent {
             docker {
@@ -43,8 +45,10 @@ pipeline {
             sh '# ./mvn -B gatling:execute'
           }
         }
+
       }
     }
+
     stage('Front-end') {
       agent {
         docker {
@@ -58,15 +62,18 @@ pipeline {
         sh '# gulp test'
       }
     }
+
     stage('Static Analysis') {
       steps {
         sh 'env'
       }
     }
+
     stage('Deploy') {
       steps {
         sh 'env'
       }
     }
+
   }
 }
