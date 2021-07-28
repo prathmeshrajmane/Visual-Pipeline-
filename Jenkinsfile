@@ -1,10 +1,5 @@
 pipeline {
-  agent {
-    docker {
-      image 'Maven'
-    }
-
-  }
+  agent none
   stages {
     stage('Server') {
       parallel {
