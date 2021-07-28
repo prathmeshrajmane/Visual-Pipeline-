@@ -1,45 +1,27 @@
+
 pipeline {
-  agent none
-  stages {
-    stage('Build') {
-      parallel {
-        stage('Server') {
-          agent {
-            docker {
-              image 'maven:3.5-jdk-8-slim'
+    agent none
+    stages {
+        stage('build and test') {
+            agent { docker { image 'golang:1.14' } }
+            environment {
+                GOCACHE = '/tmp/gocache'
             }
-
-          }
-          steps {
-            sh '''echo "Building the server code"
-mvn -version
-mkdir -p target
-touch "target/server.war"'''
-            stash(name: 'server', includes: '**/*.war')
-          }
-        }
-
-        stage('Client') {
-          agent {
-            docker {
-              image 'node:6'
-              args '-u 0:0'
+            steps {
+                sh 'go build'
+                sh 'go test ./...'
             }
-
-          }
-          steps {
-            sh '''echo "Building the client code"
-npm install --save react
-mkdir -p dist
-cat > dist/index.html <<EOF
-Welcome this is Testing page!
-EOF
-touch "dist/client.js"'''
-          }
         }
-
-      }
+        stage('deploy') {
+            agent any
+            environment {
+                BUILD_NUMBER_BASE = '0'
+                VERSION_MAJOR = '0'
+                VERSION_MINOR = '1'
+                VERSION_PATCH = "${env.BUILD_NUMBER.toInteger() - BUILD_NUMBER_BASE.toInteger()}"
+            }
+            
+            
+        }
     }
-
-  }
 }
