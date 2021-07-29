@@ -8,19 +8,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'mvn compile'
-      }
-    }
-
-    stage('Test') {
-      steps {
-        sh 'mvn clean test'
-      }
-    }
-
-    stage('deploy') {
-      steps {
-        sh 'mvn package'
+        sh 'mvn --version'
       }
     }
 
