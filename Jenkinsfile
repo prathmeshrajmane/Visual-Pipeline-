@@ -1,15 +1,14 @@
 pipeline {
-  agent none
+  agent {
+    docker {
+      image 'nginx'
+    }
+
+  }
   stages {
     stage('Build') {
-      agent {
-        docker {
-          image 'nginx:latest'
-        }
-
-      }
       steps {
-        sh 'sudo docker run -it --rm -d -p 8080:80 --name web nginx:latest'
+        sh 'sh docker run -it --rm -d -p 8080:80 --name web nginx:latest'
       }
     }
 
