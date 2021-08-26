@@ -1,1 +1,1 @@
-docker build -t simple-nginx .
+sudo docker build -t simple-nginx .
