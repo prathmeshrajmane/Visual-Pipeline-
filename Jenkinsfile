@@ -1,37 +1,27 @@
 pipeline {
-  agent {
-    node {
-      label 'docker'
-    }
-
-  }
-  stages {
-    stage('Docker node test') {
-      agent {
-        docker {
-          label 'docker'
-          image 'node:7-alpine'
-          args '--name docker-node'
+    agent { label 'dockerserver' } // if you don't have other steps, 'any' agent works
+    stages {
+        stage('Back-end') {
+            agent {
+                docker {
+                  label 'dockerserver'  // both label and image
+                  image 'maven:3-alpine'
+                }
+            }
+            steps {
+                sh 'mvn --version'
+            }
         }
-
-      }
-      steps {
-        sh 'node --version'
-      }
-    }
-
-    stage('Docker maven test') {
-      agent {
-        docker {
-          label 'docker'
-          image 'maven:3-alpine'
+        stage('Front-end') {
+            agent {
+              docker {
+                label 'dockerserver'  // both label and image
+                image 'node:7-alpine' 
+              }
+            }
+            steps {
+                sh 'node --version'
+            }
         }
-
-      }
-      steps {
-        sh 'mvn --version'
-      }
     }
-
-  }
 }
