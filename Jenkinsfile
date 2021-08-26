@@ -1,29 +1,15 @@
 pipeline {
-  agent none
+  agent any
   stages {
-    stage('Back-end') {
+    stage('Build') {
       agent {
         docker {
-          label 'dockerserver'
           image 'nginx'
         }
 
       }
       steps {
-        sh 'mvn --version'
-      }
-    }
-
-    stage('Front-end') {
-      agent {
-        docker {
-          label 'dockerserver'
-          image 'node:7-alpine'
-        }
-
-      }
-      steps {
-        sh 'node --version'
+        sh './new.sh'
       }
     }
 
