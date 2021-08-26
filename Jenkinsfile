@@ -1,14 +1,15 @@
 pipeline {
-  agent {
-    docker {
-      image 'centos'
-    }
-
-  }
+  agent none
   stages {
     stage('Build') {
+      agent {
+        docker {
+          image 'nginx:latest'
+        }
+
+      }
       steps {
-        sh 'cat /etc/centos-release'
+        sh 'sudo docker run -it --rm -d -p 8080:80 --name web nginx:latest'
       }
     }
 
