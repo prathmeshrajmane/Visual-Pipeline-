@@ -13,12 +13,6 @@ pipeline {
       }
     }
 
-    stage('Deploy') {
-      steps {
-        sh 'cat /etc/centos-release'
-      }
-    }
-
   }
   options {
     newContainerPerStage()
