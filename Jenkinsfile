@@ -8,7 +8,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'sh docker run -it --rm -d -p 8080:80 --name web nginx:latest'
+        sh 'docker run -it --rm -d -p 8080:80 --name web nginx:latest'
       }
     }
 
